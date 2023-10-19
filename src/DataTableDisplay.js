@@ -5,6 +5,7 @@ import './DataTableDisplay.css'; // Import the custom CSS file
 
 const DataTableDisplay = ({ data, columns }) => {
   const [selectedRow, setSelectedRow] = useState(null);
+  const [setFilters] = useState({}); // Added this line to manage filters
 
   const handleRowClick = useCallback((row) => {
     setSelectedRow(row);
@@ -13,6 +14,14 @@ const DataTableDisplay = ({ data, columns }) => {
   const handleCloseModal = useCallback(() => {
     setSelectedRow(null);
   }, []);
+
+  // Handle setting filters
+  const setFilter = (value, field) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [field]: value,
+    }));
+  };
 
   const wrapText = (text, maxWidth) => {
     if (!text) return '';
@@ -94,7 +103,7 @@ const DataTableDisplay = ({ data, columns }) => {
                         type="text"
                         className="search-input"
                         placeholder={`Search ${header}`}
-                        onChange={(e) => setFilter(e.target.value, column.field)}
+                        onChange={(e) => setFilter(e.target.value, header)} // Modified this line
                       />
                     </div>
                   </th>
