@@ -1,0 +1,38 @@
+/* DataTableDisplay.css */
+.data-table-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Styling for the search bar */
+.search-input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+/* DataTableDisplay.css */
+.data-table-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Styling for the search bar */
+.search-input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}
+
+/* Styling for the filter bar */
+.filter-input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  display: block;
+}

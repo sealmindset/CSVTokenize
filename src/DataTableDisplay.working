@@ -1,0 +1,94 @@
+import React, { useState, useCallback } from 'react';
+import DataTable from 'react-data-table-component';
+import Modal from './Modal';
+
+const DataTableDisplay = ({ data, columns }) => {
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const handleRowClick = useCallback((row) => {
+    setSelectedRow(row);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedRow(null);
+  }, []);
+
+  const wrapText = (text, maxWidth) => {
+    if (!text) return '';
+
+    if (text.length <= maxWidth) return text;
+
+    return text.slice(0, maxWidth) + '...';
+  };
+
+  const tableColumns = columns.map((header) => ({
+    name: header,
+    selector: header,
+    sortable: true,
+    cell: (row) => {
+      const wrappedText = wrapText(row[header], 250);
+      return (
+        <div
+          className="max-h-16 overflow-y-auto whitespace-wrap cursor-pointer"
+          style={{ maxWidth: '250px' }}
+          onClick={() => handleRowClick(row)}
+        >
+          {wrappedText}
+        </div>
+      );
+    },
+  }));
+
+  const ExpandableRow = () => {
+    return (
+      <div>
+        {selectedRow &&
+          Object.entries(selectedRow).map(([header, value]) => (
+            <p key={header}>
+              <strong>{header}:</strong> {value}
+            </p>
+          ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className="px-4 py-6">
+      <h2 className="text-2xl font-bold mb-4">Processed Data</h2>
+      <div className="max-w-full overflow-x-auto">
+        <DataTable
+          columns={tableColumns}
+          data={data}
+          pagination
+          paginationPerPage={10}
+          paginationRowsPerPageOptions={[10, 20, 50, 100]}
+          noDataComponent={<span className="text-red-500">No data found</span>}
+          expandableRows
+          expandableRowsComponent={<ExpandableRow />}
+          expandOnRowClicked
+        />
+      </div>
+
+      {selectedRow && (
+        <Modal onClose={handleCloseModal}>
+          <div className="modal-content">
+            <h3 className="text-lg font-semibold mb-2">Row Details</h3>
+            <table>
+              <tbody>
+                {Object.entries(selectedRow).map(([header, value]) => (
+                  <tr key={header}>
+                    <td className="font-semibold pr-2">{header}</td>
+                    <td>{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+};
+
+export default DataTableDisplay;
+
